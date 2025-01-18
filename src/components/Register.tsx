@@ -3,13 +3,13 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { userFecth } from "../axios/config"
 import { z } from "zod";
 
-const userFormSchema = z.object({
+const userRegisterFormSchema = z.object({
   username: z.string().min(3).max(20),
   email: z.string().email(),
   password: z.string().min(6).max(20)
 })
 
-type FormFields = z.infer<typeof userFormSchema>
+type RegisterFormFields = z.infer<typeof userRegisterFormSchema>
 
 export const Register = () => {
 
@@ -18,14 +18,14 @@ export const Register = () => {
       handleSubmit, 
       setError,
       formState: { errors, isSubmitting },
-    } = useForm<FormFields>({
+    } = useForm<RegisterFormFields>({
       defaultValues: {
         email: "teste@email.com"
       }
     })
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    const result = userFormSchema.safeParse(data) 
+  const onSubmit: SubmitHandler<RegisterFormFields> = async (data) => {
+    const result = userRegisterFormSchema.safeParse(data) 
     if(!result.success) return 
 
     const { username, email, password } = data
@@ -108,10 +108,10 @@ export const Register = () => {
                   {required: "Senha obrigatória", 
                                                minLength: {
                                                 value: 6,
-                                                message: "Senha ter no minímo 6 digitos"
+                                                message: "Senha precisa ter no minímo 6 digitos"
                                                },
                                               })} 
-                type="password" 
+                type="text" 
                 placeholder="Digite sua senha" 
                 className="py-2 px-2"
               />
