@@ -4,7 +4,6 @@ import './index.css'
 import { App } from './App.tsx'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Home } from './components/Home.tsx'
 import { Register } from './components/Register.tsx'
 import { Login } from './components/Login.tsx'
 
@@ -15,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />
+        element: <Register />
       },
       {
         path: "/register",
