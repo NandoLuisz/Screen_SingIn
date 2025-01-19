@@ -1,11 +1,12 @@
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { userFecth } from "../axios/config"
 import { z } from "zod"
 
 import background_sigIn_3 from "/images/background_singIn_3.webp"
 import { FcGoogle } from "react-icons/fc"
 import { FaGithub } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { AuthContext } from "../context/AuthContext"
 
 const userLoginFormSchema = z.object({
   username: z.string().min(3).max(20),
@@ -15,6 +16,10 @@ const userLoginFormSchema = z.object({
 type LoginFormFields = z.infer<typeof userLoginFormSchema>
 
 export const Login = () => {
+
+  const navigate = useNavigate()
+
+  const { singIn } = useContext(AuthContext)
 
   const 
     { register, 
@@ -30,35 +35,8 @@ export const Login = () => {
 
     const { username, password } = data
 
-    const user = {
-      username,
-      password
-    }
+    await singIn({ username, password }, () => navigate("/dashboard"))
 
-    try {
-      const response = await userFecth.post("/login", JSON.stringify(user))
-      if(response.status === 200) console.log(response.data)
-        reset()
-    } catch (error: any) {
-      if(error.response && error.response.status === 400){
-        const errorMessage = error.response.data
-        console.log(errorMessage)
-
-        if(errorMessage === "Usuário não cadastrado."){
-          setError("username", {
-            message: errorMessage
-          })
-        }else if(errorMessage === "Senha incorreta."){
-          setError("password", {
-            message: errorMessage
-          })
-        }else{
-          setError("root", {
-            message: errorMessage
-          })
-        }
-      }
-    }
   }
 
   return (
@@ -72,14 +50,14 @@ export const Login = () => {
             <h1 className="text-3xl font-bold">Login</h1>
             <p>Digite seus dados abaixo</p>
             <div className="w-full flex flex-col gap-2">
-              <button className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md">
+              <div className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
                 <FcGoogle className="size-6"/> 
                 <span className="font-semibold">Criar com Google</span>
-              </button>
-              <button className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md">
+              </div>
+              <div className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
                 <FaGithub className="size-6"/> 
                 <span className="font-semibold">Criar com GitHub</span>
-              </button>
+              </div>
             </div>
             <div className="w-full flex flex-col gap-6">
               <div className="w-full flex flex-col gap-2">

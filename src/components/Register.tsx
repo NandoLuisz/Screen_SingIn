@@ -18,6 +18,8 @@ type RegisterFormFields = z.infer<typeof userRegisterFormSchema>
 
 export const Register = () => {
 
+  console.log(name)
+
   const 
     { register, 
       handleSubmit, 
@@ -46,7 +48,7 @@ export const Register = () => {
     try {
       const response = await userFecth.post("/register", JSON.stringify(user))
       if(response.status === 200) console.log("Usuário cadastrado com sucesso!")
-      reset()
+      reset()      
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         const errorMessage = error.response.data
@@ -78,14 +80,14 @@ export const Register = () => {
               <h1 className="text-3xl font-bold">Registro</h1>
               <p>Digite seus dados abaixo</p>
               <div className="w-full flex flex-col gap-2">
-                <button className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md">
+                <div className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
                   <FcGoogle className="size-6"/> 
                   <span className="font-semibold">Criar com Google</span>
-                </button>
-                <button className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md">
+                </div>
+                <div className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
                   <FaGithub className="size-6"/> 
                   <span className="font-semibold">Criar com GitHub</span>
-                </button>
+                </div>
               </div>
               <div className="w-full flex flex-col gap-6">
                 <div className="`w-full flex flex-col gap-2">
